@@ -7,7 +7,6 @@ import random
 from keras.preprocessing.image import ImageDataGenerator
 import tensorflow as tf
 from tensorflow import keras
-from keras.callbacks import ModelCheckpoint
 from tensorflow.keras import layers
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
@@ -20,6 +19,8 @@ st.title(":red[Computer Vision]", anchor=False)
 tab_intro, tab_cnn, tab_gtm = st.tabs(["Introductie", "Convolutional Neural Network", "Google Teachable Machine"])
 
 def get_eda():
+    st.subheader("Exploratory Data Analysis")
+
     fig, axes = plt.subplots(len(class_names), 5, figsize=(12, 12))
 
     for i, class_name in enumerate(class_names):
@@ -36,7 +37,7 @@ def get_eda():
             axes[i, j].imshow(img)
             axes[i, j].axis('off')
         
-        axes[i, 2].set_title(f'{class_name.replace("_", " ")}: {len(image_files)} training images', fontsize=18, fontweight='bold')
+        axes[i, 2].set_title(f'{class_name.replace("_", " ")}: {len(image_files)} training images', fontsize=18, fontweight='bold', pad=10)
         axes[i, 0].title.set_position([0.5, 5])  # Adjust title position
 
     # add some padding to the rows
@@ -159,6 +160,38 @@ def train_model(epoch_amount):
 
     # Display the plot in Streamlit
     st.pyplot(fig)
+
+    st.subheader("Een paar images van de test set uitproberen:")
+    # get a random batch index from the test set
+    random_batch_idx = random.randint(0, len(test_set) - 1)
+
+    # get the batch (2d list of images and labels)
+    batch = test_set[random_batch_idx]
+
+    # generate a list of random 5 images/labels indexes from batch
+    random_test_indexes = random.sample(range(len(batch[0])), 5)
+
+    for idx in random_test_indexes:
+        fig, axes = plt.subplots(1,1, figsize=(12, 12))
+
+        images, labels = batch
+        
+        image = images[idx]
+        label = labels[idx]
+        #label is e.g. [0. 0. 0. 1. 0.]
+    
+        actual_label = np.where(label == 1)[0][0]
+
+        prediction = model.predict(np.expand_dims(image, axis=0))
+        predicted_label = np.argmax(prediction, axis=1)
+
+        # check if actual and predicted labels match
+        label_color = 'green' if actual_label == predicted_label else 'maroon'
+
+        plt.imshow(image)
+        plt.title(f"Actual: {class_names[actual_label]}\nPredicted: {class_names[predicted_label[0]]}", color=label_color)
+        plt.axis('off')
+        st.pyplot(fig)
 
 
 with tab_intro:
