@@ -292,3 +292,6 @@ with tab_scraper:
                 """)
     st.image('./images/scraper/scraper_loop.png')
     st.image('./images/scraper/scraper_ask_user.png')
+
+    st.header("De uiteindelijk folder structuur")
+    st.image('./images/scraper/scraper_folder_structure.png')
