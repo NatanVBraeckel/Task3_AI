@@ -16,7 +16,7 @@ class_names = os.listdir('./datasets/training_set/')
 
 st.title(":red[Computer Vision]", anchor=False)
 
-tab_intro, tab_cnn, tab_gtm = st.tabs(["Introductie", "Convolutional Neural Network", "Google Teachable Machine"])
+tab_intro, tab_cnn, tab_gtm, tab_scraper = st.tabs(["Introductie", "Convolutional Neural Network", "Google Teachable Machine", "Image Scraper"])
 
 def get_eda():
     st.subheader("Exploratory Data Analysis")
@@ -223,6 +223,8 @@ with tab_cnn:
 
 with tab_gtm:
     st.header("Google Teachable Machine")
+
+    st.subheader("De classes met training data")
     
     st.subheader("De classes met training data")
     st.image('./images/gtm_classes.png', use_column_width=True)
@@ -239,4 +241,53 @@ with tab_gtm:
     st.subheader("Confusion matrix")
     st.image('./images/gtm_cmpng.png', use_column_width=False)
 
+with tab_scraper:
+    st.header("Image Scraper")
 
+    st.write(":orange[DEZE PAGINA IS NA DE DEADLINE TOEGEVOEGD.]")
+    st.write(":yellow[De scraper had ik niet bij in mijn notebook gezet, zodat deze niet altijd geactiveerd zou worden bij het runnen van de hele notebook.]")
+    st.write(":yellow[Ik ben die dan uiteindelijk vergeten er bij in te zetten. Maar ik wou mijn code toch nog laten zien, vandaar deze pagina in de streamlit app.]")
+
+    st.subheader("Alle code")
+    st.image('./images/scraper/scraper_all_code.png')
+
+    st.header("De functie", anchor=False)
+    st.subheader("Image sources scrapen")
+    st.markdown("""
+                Eerst wordt de browser opgestart en gesurft naar Flickr met de zoekterm die de gebruiker heeft ingegeven.
+
+                Daarna wordt er een lus opgestart. Zolang er niet genoeg images zijn zal er nog wat verder gescrollt worden om meer images in te laden.
+
+                Als er genoeg images gevonden zijn, worden alle src attributen (de link naar de image) opgehaald en opgeslagen in photo_sources.
+
+                Die array wordt ook gesliced, zodat er evenveel images zijn als gevraagd.
+
+                De driver/browser kan dan ook afgesloten worden.
+                """)
+    st.image('./images/scraper/scraper_getting_images.png')
+
+    st.subheader("Images downloaden")
+    st.markdown("""
+                Nudat alle links naar de images zijn opgehaald, kunnen ze 1 voor 1 gedownload worden.
+
+                Er worden folders aangemaakt in de training_set en test_set folder met de zoekterm als naam.
+
+                (b.v. /datasets/training_set/elephant en /datasets/test_set/elphant)
+
+                Dan worden de images 1 voor 1 gedownload.
+
+                De index van de image wordt vergeleken met het aantal foto's dat de gebruiker heeft opgevraagd.
+                Als deze kleiner is dan 80% van het aantal gevraagde foto's zal de foto in de training set geplaatsd worden, anders in de test set.
+
+                Zo zullen de foto's automatisch verdeeld worden in 80% training set / 20% test set (b.v. 250 images => 200 training + 50 test images).
+                """)
+    st.image('./images/scraper/scraper_downloading_images.png')
+
+    st.header("De functie oproepen")
+    st.markdown("""
+                De functie kan opgeroepen worden door een zoekterm en een aantal gevraagde images mee te geven.
+
+                Dit kan bijvoorbeeld voorgeprogammeerd met een lus, of het kan voor opstarten aan de gebruiker gevraagd worden.
+                """)
+    st.image('./images/scraper/scraper_loop.png')
+    st.image('./images/scraper/scraper_ask_user.png')
