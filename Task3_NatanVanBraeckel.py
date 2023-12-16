@@ -20,6 +20,9 @@ tab_intro, tab_cnn, tab_gtm, tab_scraper = st.tabs(["Introductie", "Convolutiona
 
 def get_eda():
     st.subheader("Exploratory Data Analysis")
+    st.markdown("""
+                Een paar willekeurig geselecteerde foto's voor elk dier.
+                """)
 
     fig, axes = plt.subplots(len(class_names), 5, figsize=(12, 12))
 
@@ -223,8 +226,6 @@ with tab_cnn:
 
 with tab_gtm:
     st.header("Google Teachable Machine")
-
-    st.subheader("De classes met training data")
     
     st.subheader("De classes met training data")
     st.image('./images/gtm_classes.png', use_column_width=True)
